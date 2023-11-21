@@ -17,7 +17,7 @@ async function RenderUsers() {
       ` <div class="user" id="${user.id}">
           <div class="name_cont">
             <p class="name">${user.name}</p>
-            <p class="name">${user.email}</p>
+            <p class="email">${user.email}</p>
           </div>
         </div>`;
     users_cont.innerHTML += html;
@@ -34,12 +34,19 @@ async function GetUserPosts($user_id) {
     return Error("Fehler beim bie GetUserPosts");
 }
 
+function removeActiveClass() {
+  const usersContainers = document.querySelectorAll(".user");
+  usersContainers.forEach(user_cont => {
+    user_cont.classList.remove("active");
+  });
+}
 async function main() {
   await RenderUsers();
   const usersContainers = document.querySelectorAll(".user");
   usersContainers.forEach(user_cont => {
     user_cont.addEventListener("click", function () {
-
+      removeActiveClass();
+      user_cont.classList.add("active");
       //const posts = await GetUserPosts(user_cont.id);
       GetUserPosts(user_cont.id).then(posts => {
         const post_cont = document.querySelector(".posts_main_cont");
